@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="productsPage">Products Page</button>
+    <br />
+    <br />
+    <form action="" id="form" onsubmit="addedTodatabase(event)">
+      <label for="">Product name</label>
+      <input type="text" id="name" placeholder="Product Name" class="input" />
+      <br />
+      <br />
+      <label for="">Category</label>
+      <input
+        type="text"
+        id="category"
+        placeholder="Category"
+        class="input"
+        style="margin-left: 30px"
+      />
+      <br />
+      <br />
+      <!-- image link
+        https://media.istockphoto.com/photos/red-generic-sedan-car-isolated-on-white-background-3d-illustration-picture-id1189903200?k=20&m=1189903200&s=612x612&w=0&h=L2bus_XVwK5_yXI08X6RaprdFKF1U9YjpN_pVYPgS0o=
+        image link -->
+      <label for="">Image url</label>
+      <input
+        type="text"
+        id="image"
+        placeholder="Image URL"
+        class="input"
+        style="margin-left: 27px"
+        value="https://media.istockphoto.com/photos/red-generic-sedan-car-isolated-on-white-background-3d-illustration-picture-id1189903200?k=20&m=1189903200&s=612x612&w=0&h=L2bus_XVwK5_yXI08X6RaprdFKF1U9YjpN_pVYPgS0o=
+        "
+      />
+      <br />
+      <br />
+      <label for="">Price</label>
+      <input
+        type="number"
+        id="price"
+        placeholder="price"
+        class="input"
+        style="margin-left: 55px"
+      />
+      <br />
+      <br />
+      <label for="">Gender </label>
+      <input
+        type="text"
+        id="gender"
+        placeholder="Gender"
+        class="input"
+        style="margin-left: 40px"
+      />
+      <br />
+      <br />
+      <label for="">Sold</label>
+      <input
+        type="text"
+        id="sold"
+        value="false"
+        class="input"
+        style="margin-left: 58px"
+      />
+      <br />
+      <br />
+      <input type="submit" id="add" />
+    </form>
+  </body>
+</html>
+
+<script>
+  let productsList = JSON.parse(localStorage.getItem("Products")) || [];
+
+  function Product(
+    givenName,
+    givenCategory,
+    givenImage,
+    givenPrice,
+    givenGender,
+    givenSold
+  ) {
+    this.productName = givenName;
+    this.category = givenCategory;
+    this.image = givenImage;
+    this.price = givenPrice;
+    this.gender = givenGender;
+    this.sold = givenSold;
+  }
+
+  function addedTodatabase(event) {
+    event.preventDefault();
+    let form = document.querySelector("form");
+    let name = form.name.value;
+    let category = form.category.value;
+    let image = form.image.value;
+    let price = form.price.value;
+    let gender = form.gender.value;
+    let sold = form.sold.value;
+    // console.log(name, category, image, price, gender);
+
+    let item = new Product(name, category, image, price, gender, sold);
+    productsList.push(item);
+    // console.log(productsList);
+    localStorage.setItem("Products", JSON.stringify(productsList));
+  }
+
+  document
+    .querySelector("#productsPage")
+    .addEventListener("click", goToProductsPage);
+
+  function goToProductsPage() {
+    window.location.href = "./product.html";
+  }
+</script>

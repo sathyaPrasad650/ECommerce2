@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      img {
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2></h2>
+    <button id="indexPage">Home Page</button>
+    <div id="container"></div>
+  </body>
+</html>
+
+<script>
+  let productData = JSON.parse(localStorage.getItem("Products")) || [];
+
+  // to get the total number of products in the page
+  let totalProducts = productData.length;
+  document.querySelector("h2").append(totalProducts);
+
+  // displaying the products
+  productData.map(function (ele, index) {
+    // creating box to store all the details of the product
+    let box = document.createElement("div");
+
+    //// getting all the details of the product
+    // getting image
+    let imageD = document.createElement("img");
+    imageD.src = ele.image;
+
+    // getting name
+    let nameD = document.createElement("p");
+    nameD.innerText = ele.productName;
+
+    // getting category
+    let categoryD = document.createElement("p");
+    categoryD.innerText = ele.category;
+
+    // getting prince
+    let priceD = document.createElement("p");
+    priceD.innerText = ele.price;
+
+    // getting gender
+    let genderD = document.createElement("p");
+    genderD.innerText = ele.gender;
+
+    // creating remove button
+    let btnR = document.createElement("button");
+    btnR.innerText = "Remove product";
+    btnR.setAttribute("id", "remove");
+    btnR.addEventListener("click", function () {
+      removeProduct(ele, index);
+    });
+
+    // creating sold button
+    //////
+    var btnS = document.createElement("button");
+    btnS.setAttribute("id", "sold");
+    btnS.innerText = "SOLD";
+    btnS.value = ele.sold;
+    if (ele.sold == "false") {
+      btnS.style.background = "green";
+      btnS.innerText = "NOT SOLD";
+    } else {
+      btnS.style.background = "red";
+      btnS.innerText = "SOLD";
+    }
+    btnS.addEventListener("click", ChangeSoldValue);
+    function ChangeSoldValue() {
+      console.log("ssss");
+      if (ele.sold == "false") {
+        ele.sold = "true";
+        btnS.style.background = "red";
+        localStorage.setItem("Products", JSON.stringify(productData));
+        window.location.reload();
+      } else if (ele.sold == "true") {
+        ele.sold = "false";
+        btnS.style.background = "green";
+        localStorage.setItem("Products", JSON.stringify(productData));
+        window.location.reload();
+      }
+    }
+
+    // appending all the details inside the box
+    box.append(imageD, nameD, categoryD, priceD, genderD, btnR, btnS);
+    // appending box inside container
+    document.querySelector("#container").append(box);
+  });
+
+  function removeProduct(ele, index) {
+    productData.splice(index, 1);
+    localStorage.setItem("Products", JSON.stringify(productData));
+    window.location.reload();
+  }
+
+  document.querySelector("#indexPage").addEventListener("click", goToHomePage);
+  function goToHomePage() {
+    console.log("ssss");
+    window.location.href = "./index.html";
+  }
+</script>
